@@ -28,7 +28,7 @@ public class Mochila {
     public Mochila(Mochila mochila, Item item) {
         this.capacidade = mochila.getCapacidade() - item.getPeso();
         this.valor = mochila.getValor() + item.getValor();
-        this.itens = mochila.getItens();
+        this.itens = new ArrayList(mochila.getItens());
         this.itens.add(item);
     }
 
