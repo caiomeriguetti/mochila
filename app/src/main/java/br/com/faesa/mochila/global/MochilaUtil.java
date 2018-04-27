@@ -1,5 +1,6 @@
 package br.com.faesa.mochila.global;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.faesa.mochila.model.Item;
@@ -46,7 +47,6 @@ public class MochilaUtil {
 
         for (int i = 1; i < V.length; i++) {
             V[i][0] = new Mochila(W);
-            continue;
         }
 
         for (int i = 1; i <= n; i++) {
@@ -58,6 +58,36 @@ public class MochilaUtil {
                     V[i][w] = mochilaMaisValiosa(mochilaAcima, mochilaComItemDoIndice);
                 } else {
                     V[i][w] = V[i - 1][w];
+                }
+            }
+        }
+
+        return V;
+    }
+
+    public static List<List<Mochila>> criarTabelaLOO(List<Item> itens, int capacidadeMochila){
+        int n = itens.size();
+        int W = capacidadeMochila;
+
+        List<List<Mochila>> V = new ArrayList<>(n + 1);
+
+        for (int i = 0; i <= n; i++) {
+            V.add(i, new ArrayList<Mochila>(W + 1));
+
+            for (int j = 0; j <= W; j++) {
+                V.get(i).add(j, new Mochila(W));
+            }
+        }
+
+        for (int i = 1; i <= n; i++) {
+            for(int w = 1; w <= W; w ++) {
+                if(itens.get(i-1).getPeso() <= w) {
+                    Mochila mochilaAcima = V.get(i - 1).get(w);
+                    Mochila mochilaComItemDoIndice = new Mochila(V.get(i - 1).get(w- itens.get(i - 1).getPeso()), itens.get(i-1));
+
+                    V.get(i).set(w, mochilaMaisValiosa(mochilaAcima, mochilaComItemDoIndice));
+                } else {
+                    V.get(i).set(w, V.get(i - 1).get(w));
                 }
             }
         }

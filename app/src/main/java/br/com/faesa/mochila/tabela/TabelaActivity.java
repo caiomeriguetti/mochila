@@ -2,14 +2,15 @@ package br.com.faesa.mochila.tabela;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
-import android.widget.TableLayout;
-import android.widget.Toast;
+
+import com.evrencoskun.tableview.TableView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import br.com.faesa.mochila.R;
 import br.com.faesa.mochila.global.MochilaUtil;
 import br.com.faesa.mochila.global.Mockador;
-import br.com.faesa.mochila.global.TableUtils;
 import br.com.faesa.mochila.model.Item;
 import br.com.faesa.mochila.model.Mochila;
 import butterknife.BindView;
@@ -18,7 +19,7 @@ import butterknife.ButterKnife;
 public class TabelaActivity extends AppCompatActivity {
 
     @BindView(R.id.tblTabela)
-    TableLayout tabela;
+    TableView tabela;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,20 +27,24 @@ public class TabelaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tabela);
         ButterKnife.bind(this);
 
-        Mochila[][] mochilas = MochilaUtil.criarTabelaOO(Mockador.itens(), 25);
-        TableUtils.montarTabela(tabela, mochilas, new TableUtils.Celulavel<Mochila>() {
-            @Override
-            public String getTexto(Mochila mochila) {
-                return String.valueOf(mochila.getValor());
-            }
+        TableViewAdapter adapter = new TableViewAdapter(this);
+        tabela.setAdapter(adapter);
 
-            @Override
-            public void onClick(Mochila mochila) {
+        int capacidade = 25;
+        List<Item> itens = Mockador.itens();
+        List<List<Mochila>> mochilas = MochilaUtil.criarTabelaLOO(itens, capacidade);
 
-                String joinIntens =  TextUtils.join(", ", mochila.getItens());
+        List<Integer> titulosColuna = new ArrayList<>(capacidade);
+        for (int i = 0; i <= capacidade; i++) {
+            titulosColuna.add(i);
+        }
 
-                Toast.makeText(TabelaActivity.this, joinIntens, Toast.LENGTH_SHORT).show();
-            }
-        });
+        List<String> titulosLinha = new ArrayList<>(itens.size() + 1);
+        titulosLinha.add("Inicial");
+        for (int i = 0; i < itens.size(); i++) {
+            titulosLinha.add(itens.get(i).getNome());
+        }
+
+        adapter.setAllItems(titulosColuna, titulosLinha, mochilas);
     }
 }

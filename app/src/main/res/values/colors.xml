@@ -3,4 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="bg_celula">#ffffff</color>
+    <color name="text_celula_color">#1f1f1f</color>
 </resources>

@@ -1,0 +1,5 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/largura_celula"
+    android:layout_height="@dimen/altura_celula"
+    android:background="@color/bg_celula">
+</RelativeLayout>
